@@ -33,6 +33,16 @@ jobs:
           Remove-Item -Force pubspec.lock -ErrorAction SilentlyContinue
           flutter create . --platforms=windows --org com.example
 
+      - name: Enable static MSVC runtime (no VCRUNTIME DLL needed)
+        run: |
+          $cmake = "windows\CMakeLists.txt"
+          $content = Get-Content $cmake -Raw
+          $staticLine = 'set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")'
+          if ($content -notmatch [regex]::Escape($staticLine)) {
+            $content = $content -replace '(cmake_minimum_required\(VERSION [^\)]+\))', "`$1`n$staticLine"
+            Set-Content $cmake $content -NoNewline
+          }
+
       - name: Remove default test file
         run: Remove-Item test/widget_test.dart -ErrorAction SilentlyContinue
 
