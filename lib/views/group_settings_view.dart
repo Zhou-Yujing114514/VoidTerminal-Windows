@@ -16,9 +16,7 @@ class GroupSettingsView extends StatefulWidget {
 }
 
 class _GroupSettingsViewState extends State<GroupSettingsView> {
-  bool _showRename = false;
   final _newNameController = TextEditingController();
-  bool _showAddMembers = false;
   String _message = '';
 
   @override
@@ -28,13 +26,10 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
   }
 
   ChatGroup get _group {
-    // 从 appState 获取最新的群信息
     final app = context.read<AppState>();
     final idx = app.groups.indexWhere((g) => g.id == widget.group.id);
     return idx >= 0 ? app.groups[idx] : widget.group;
   }
-
-  bool get _isOwner => _group.owner == context.read<AppState>().currentUserId;
 
   String _memberName(int index, String memberId) {
     final g = _group;
@@ -76,7 +71,6 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // 群头像和名称
           _buildCard(
             card,
             children: [
@@ -99,7 +93,6 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
             ],
           ),
           const SizedBox(height: 16),
-          // 群成员
           _buildSectionTitle('群成员', text),
           const SizedBox(height: 8),
           _buildCard(
@@ -118,7 +111,6 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
             ],
           ),
           const SizedBox(height: 16),
-          // 群主操作 / 普通成员操作
           if (isOwner) ...[
             _buildSectionTitle('群管理', text),
             const SizedBox(height: 8),
@@ -129,17 +121,14 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
                   icon: Icons.edit_outlined,
                   label: '修改群名称',
                   textColor: text,
-                  onTap: () {
-                    _newNameController.text = g.name;
-                    setState(() => _showRename = true);
-                  },
+                  onTap: () => _showRenameDialog(context, g),
                 ),
                 const Divider(height: 1),
                 _buildListTile(
                   icon: Icons.person_add_outlined,
                   label: '添加成员',
                   textColor: text,
-                  onTap: () => setState(() => _showAddMembers = true),
+                  onTap: () => _showAddMembersSheet(context, g),
                 ),
                 const Divider(height: 1),
                 _buildListTile(
@@ -281,6 +270,43 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
     );
   }
 
+  void _showRenameDialog(BuildContext context, ChatGroup g) {
+    _newNameController.text = g.name;
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('修改群名称'),
+        content: TextField(
+          controller: _newNameController,
+          maxLength: 20,
+          decoration: const InputDecoration(hintText: '新群名称'),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('取消')),
+          TextButton(
+            onPressed: () {
+              final newName = _newNameController.text.trim();
+              if (newName.isNotEmpty) {
+                context.read<AppState>().groupRename(g.id, newName);
+              }
+              Navigator.pop(ctx);
+            },
+            child: const Text('确定'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAddMembersSheet(BuildContext context, ChatGroup g) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => AddGroupMembersSheet(group: g),
+    );
+  }
+
   void _showConfirmDialog(
     BuildContext context, {
     required String title,
@@ -333,6 +359,10 @@ class _AddGroupMembersSheetState extends State<AddGroupMembersSheet> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.6,
       padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.vtCard : Colors.white,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+      ),
       child: Column(
         children: [
           Row(

@@ -253,7 +253,7 @@ class _AuthViewState extends State<AuthView> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: selected ? AppColors.vtAccent.withValues(alpha: 0.15) : Colors.transparent,
+          color: selected ? AppColors.vtAccent.withOpacity(0.15) : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: selected ? AppColors.vtAccent : AppColors.vtBorder,

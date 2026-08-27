@@ -16,7 +16,6 @@ class TwoFAView extends StatefulWidget {
 class _TwoFAViewState extends State<TwoFAView> {
   String _secret = '';
   String _uri = '';
-  String _code = '';
   String _message = '';
   bool _isLoading = false;
   bool _showingSetup = false;
