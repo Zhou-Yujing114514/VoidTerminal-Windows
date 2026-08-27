@@ -7,6 +7,7 @@ class User {
   String? role;
   bool? banned;
   int? createdAt;
+  bool? totpEnabled;
 
   User({
     required this.id,
@@ -15,6 +16,7 @@ class User {
     this.role,
     this.banned,
     this.createdAt,
+    this.totpEnabled,
   });
 
   bool get isAdmin => role == 'admin';
@@ -27,6 +29,7 @@ class User {
         role: json['role'] as String?,
         banned: json['banned'] as bool?,
         createdAt: json['createdAt'] as int? ?? json['created_at'] as int?,
+        totpEnabled: json['totpEnabled'] as bool?,
       );
 }
 
@@ -88,6 +91,8 @@ class ChatGroup {
   String name;
   final String owner;
   List<String> members;
+  List<String>? memberNames;
+  List<String>? memberAvatars;
   String? avatar;
   int? createdAt;
   bool isOwner = false;
@@ -97,6 +102,8 @@ class ChatGroup {
     required this.name,
     required this.owner,
     required this.members,
+    this.memberNames,
+    this.memberAvatars,
     this.avatar,
     this.createdAt,
     this.isOwner = false,
@@ -107,6 +114,8 @@ class ChatGroup {
         name: json['name'] as String? ?? '',
         owner: json['owner'] as String? ?? '',
         members: (json['members'] as List?)?.map((e) => e.toString()).toList() ?? [],
+        memberNames: (json['memberNames'] as List?)?.map((e) => e.toString()).toList(),
+        memberAvatars: (json['memberAvatars'] as List?)?.map((e) => e.toString()).toList(),
         avatar: json['avatar'] as String?,
         createdAt: json['createdAt'] as int?,
       );
@@ -208,6 +217,7 @@ class HelloMessage {
   final List<ChatGroup>? groups;
   final List<User>? friends;
   final List<FriendRequest>? pendingRequests;
+  final List<GroupRequest>? groupApplyRequests;
   final Map<String, List<ChatMessage>>? dmRooms;
   final Map<String, List<ChatMessage>>? groupMsgs;
   final List<Moment>? moments;
@@ -222,6 +232,7 @@ class HelloMessage {
     this.groups,
     this.friends,
     this.pendingRequests,
+    this.groupApplyRequests,
     this.dmRooms,
     this.groupMsgs,
     this.moments,
@@ -244,6 +255,9 @@ class HelloMessage {
             .toList(),
         pendingRequests: (json['pendingRequests'] as List?)
             ?.map((e) => FriendRequest.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        groupApplyRequests: (json['groupApplyRequests'] as List?)
+            ?.map((e) => GroupRequest.fromJson(e as Map<String, dynamic>))
             .toList(),
         dmRooms: (json['dmRooms'] as Map<String, dynamic>?)?.map((k, v) => MapEntry(
             k,
@@ -320,5 +334,20 @@ class GroupRequest {
         fromAvatar: json['fromAvatar'] as String?,
         time: json['time'] as int? ?? 0,
         status: json['status'] as String?,
+      );
+}
+
+/// TOTP 两步验证启用响应
+class TotpEnableResponse {
+  final bool ok;
+  final String? secret;
+  final String? uri;
+
+  TotpEnableResponse({required this.ok, this.secret, this.uri});
+
+  factory TotpEnableResponse.fromJson(Map<String, dynamic> json) => TotpEnableResponse(
+        ok: json['ok'] as bool? ?? false,
+        secret: json['secret'] as String?,
+        uri: json['uri'] as String?,
       );
 }

@@ -108,6 +108,9 @@ class AppState extends ChangeNotifier {
       if (!pendingRequests.any((e) => e.id == req.id)) { pendingRequests.add(req); notifyListeners(); }
     };
     ws.onFriendUpdate = (list) { friends = list; notifyListeners(); };
+    ws.onRequestRespond = (ok, action, fromName) {
+      showToast(ok ? '好友请求已${action == 'accept' ? '接受' : '拒绝'}（来自 $fromName）' : '操作失败');
+    };
     ws.onRequestSent = (ok, error) => showToast(ok ? '验证请求已发送' : (error ?? '发送失败'));
     ws.onGroupCreated = (g) { g.isOwner = true; groups.add(g); showToast('群聊「${g.name}」已创建'); notifyListeners(); };
     ws.onGroupRemoved = (gid, error) { groups.removeWhere((e) => e.id == gid); groupMessages.remove(gid); showToast(error); notifyListeners(); };
@@ -148,6 +151,7 @@ class AppState extends ChangeNotifier {
     groups = (msg.groups ?? []).map((g) { g.isOwner = g.owner == currentUserId; return g; }).toList();
     friends = msg.friends ?? [];
     pendingRequests = msg.pendingRequests ?? [];
+    groupRequests = msg.groupApplyRequests ?? [];
     if (msg.groupMsgs != null) {
       groupMessages = msg.groupMsgs!.map((k, v) => MapEntry(k, v.map((m) { m.isFromMe = m.from == currentUserId; return m; }).toList()));
     }
@@ -232,6 +236,22 @@ class AppState extends ChangeNotifier {
     }
   }
 
+  /// TOTP 验证码登录
+  Future<String?> loginTotp(String username, String code) async {
+    try {
+      final data = await api.loginTotp(username, code);
+      token = data['token'] as String?;
+      currentUser = User.fromJson(data['user']);
+      isAdmin = currentUser?.isAdmin ?? false;
+      notifyListeners();
+      return null;
+    } on ApiException catch (e) {
+      return e.message;
+    } catch (e) {
+      return '登录失败: $e';
+    }
+  }
+
   Future<String?> register(String username, String password, String password2) async {
     try {
       final data = await api.register(username, password, password2);
@@ -260,8 +280,69 @@ class AppState extends ChangeNotifier {
     groups.clear();
     friends.clear();
     moments.clear();
+    groupRequests.clear();
     currentRoom = null;
     notifyListeners();
+  }
+
+  // MARK: - 两步验证 (2FA / TOTP)
+  Future<TotpEnableResponse?> enable2FA() async {
+    final t = token;
+    if (t == null) return null;
+    try {
+      return await api.enable2FA(t);
+    } catch (e) {
+      showToast('开启失败: $e');
+      return null;
+    }
+  }
+
+  Future<bool> confirm2FA(String code) async {
+    final t = token;
+    if (t == null) return false;
+    try {
+      await api.confirm2FA(t, code);
+      if (currentUser != null) {
+        currentUser = User(
+          id: currentUser!.id,
+          username: currentUser!.username,
+          avatar: currentUser!.avatar,
+          role: currentUser!.role,
+          banned: currentUser!.banned,
+          createdAt: currentUser!.createdAt,
+          totpEnabled: true,
+        );
+      }
+      notifyListeners();
+      return true;
+    } catch (e) {
+      showToast('确认失败: $e');
+      return false;
+    }
+  }
+
+  Future<bool> disable2FA(String code) async {
+    final t = token;
+    if (t == null) return false;
+    try {
+      await api.disable2FA(t, code);
+      if (currentUser != null) {
+        currentUser = User(
+          id: currentUser!.id,
+          username: currentUser!.username,
+          avatar: currentUser!.avatar,
+          role: currentUser!.role,
+          banned: currentUser!.banned,
+          createdAt: currentUser!.createdAt,
+          totpEnabled: false,
+        );
+      }
+      notifyListeners();
+      return true;
+    } catch (e) {
+      showToast('关闭失败: $e');
+      return false;
+    }
   }
 
   // MARK: - 搜索群

@@ -4,6 +4,7 @@ import '../app_state.dart';
 import '../models.dart';
 import '../theme.dart';
 import '../widgets.dart';
+import 'group_settings_view.dart';
 
 class ChatView extends StatefulWidget {
   final Room room;
@@ -45,6 +46,22 @@ class _ChatViewState extends State<ChatView> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
   }
 
+  void _openGroupSettings() {
+    final app = context.read<AppState>();
+    final group = app.groups.firstWhere(
+      (g) => g.id == widget.room.id,
+      orElse: () => ChatGroup(
+        id: widget.room.id,
+        name: widget.room.name,
+        owner: '',
+        members: [],
+      ),
+    );
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => GroupSettingsView(group: group)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final app = context.watch<AppState>();
@@ -54,6 +71,7 @@ class _ChatViewState extends State<ChatView> {
     final card = isDark ? AppColors.vtCard : Colors.white;
     final text = isDark ? AppColors.vtText : const Color(0xFF333333);
     final muted = AppColors.vtMuted;
+    final isGroup = widget.room.type == 'group';
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scroll.hasClients && msgs.isNotEmpty) {
@@ -79,6 +97,15 @@ class _ChatViewState extends State<ChatView> {
                   message: app.announcement,
                   child: Icon(Icons.campaign_outlined, size: 18, color: AppColors.vtAmber),
                 ),
+              if (isGroup) ...[
+                const SizedBox(width: 8),
+                IconButton(
+                  icon: const Icon(Icons.settings_outlined, size: 20),
+                  color: muted,
+                  onPressed: _openGroupSettings,
+                  tooltip: '群设置',
+                ),
+              ],
             ],
           ),
         ),

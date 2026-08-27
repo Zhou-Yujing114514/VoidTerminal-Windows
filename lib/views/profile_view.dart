@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../app_state.dart';
 import '../theme.dart';
 import '../widgets.dart';
+import 'two_fa_view.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -15,6 +16,7 @@ class ProfileView extends StatelessWidget {
     final card = isDark ? AppColors.vtCard : Colors.white;
     final text = isDark ? AppColors.vtText : const Color(0xFF333333);
     final muted = AppColors.vtMuted;
+    final totpEnabled = app.currentUser?.totpEnabled == true;
 
     return Container(
       color: bg,
@@ -52,7 +54,7 @@ class ProfileView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                // 设置项
+                // 账号设置
                 Container(
                   decoration: BoxDecoration(color: card, borderRadius: BorderRadius.circular(12)),
                   child: Column(
@@ -60,6 +62,16 @@ class ProfileView extends StatelessWidget {
                       _settingItem(context, Icons.edit_outlined, '修改用户名', () => _changeUsername(context, app)),
                       const Divider(height: 1),
                       _settingItem(context, Icons.lock_outline, '修改密码', () => _changePassword(context, app)),
+                      const Divider(height: 1),
+                      _settingItem(
+                        context,
+                        Icons.verified_user_outlined,
+                        '两步验证',
+                        () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const TwoFAView())),
+                        trailing: totpEnabled
+                            ? const Icon(Icons.check_circle, color: AppColors.vtGreen, size: 18)
+                            : null,
+                      ),
                       if (app.isAdmin) ...[
                         const Divider(height: 1),
                         _settingItem(context, Icons.cleaning_services_outlined, '清空公共大厅', () => app.clearHall()),
@@ -83,12 +95,13 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  Widget _settingItem(BuildContext context, IconData icon, String label, VoidCallback onTap, {Color? color}) {
+  Widget _settingItem(BuildContext context, IconData icon, String label, VoidCallback onTap, {Color? color, Widget? trailing}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final text = isDark ? AppColors.vtText : const Color(0xFF333333);
     return ListTile(
       leading: Icon(icon, size: 20, color: color ?? AppColors.vtAccent),
       title: Text(label, style: TextStyle(fontSize: 14, color: color ?? text)),
+      trailing: trailing ?? const Icon(Icons.chevron_right, size: 18, color: AppColors.vtMuted),
       onTap: onTap,
     );
   }

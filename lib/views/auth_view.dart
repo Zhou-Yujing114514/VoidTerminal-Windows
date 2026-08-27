@@ -12,9 +12,11 @@ class AuthView extends StatefulWidget {
 
 class _AuthViewState extends State<AuthView> {
   bool _isRegister = false;
+  bool _isTotpLogin = false;
   final _username = TextEditingController();
   final _password = TextEditingController();
   final _password2 = TextEditingController();
+  final _totpCode = TextEditingController();
   bool _loading = false;
   String? _error;
 
@@ -23,23 +25,60 @@ class _AuthViewState extends State<AuthView> {
     _username.dispose();
     _password.dispose();
     _password2.dispose();
+    _totpCode.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
     final app = context.read<AppState>();
     final u = _username.text.trim();
-    final p = _password.text;
-    if (u.isEmpty || p.isEmpty) {
-      setState(() => _error = '请输入用户名和密码');
+    if (u.isEmpty) {
+      setState(() => _error = '请输入用户名');
       return;
     }
+
     setState(() { _loading = true; _error = null; });
-    final err = _isRegister
-        ? await app.register(u, p, _password2.text)
-        : await app.login(u, p);
+
+    String? err;
+    if (_isTotpLogin) {
+      final code = _totpCode.text.trim();
+      if (code.isEmpty) {
+        setState(() { _loading = false; _error = '请输入验证码'; });
+        return;
+      }
+      err = await app.loginTotp(u, code);
+    } else if (_isRegister) {
+      final p = _password.text;
+      final p2 = _password2.text;
+      if (p.isEmpty || p2.isEmpty) {
+        setState(() { _loading = false; _error = '请输入密码'; });
+        return;
+      }
+      if (p != p2) {
+        setState(() { _loading = false; _error = '两次密码不一致'; });
+        return;
+      }
+      err = await app.register(u, p, p2);
+    } else {
+      final p = _password.text;
+      if (p.isEmpty) {
+        setState(() { _loading = false; _error = '请输入密码'; });
+        return;
+      }
+      err = await app.login(u, p);
+    }
+
     if (!mounted) return;
     setState(() { _loading = false; _error = err; });
+  }
+
+  void _switchMode(bool totp) {
+    setState(() {
+      _isTotpLogin = totp;
+      _isRegister = false;
+      _error = null;
+      _totpCode.clear();
+    });
   }
 
   @override
@@ -77,6 +116,30 @@ class _AuthViewState extends State<AuthView> {
                 style: TextStyle(fontSize: 13, color: muted),
               ),
               const SizedBox(height: 28),
+              // 登录方式切换
+              if (!_isRegister)
+                Row(
+                  children: [
+                    Expanded(
+                      child: _modeButton(
+                        label: '密码登录',
+                        selected: !_isTotpLogin,
+                        onTap: () => _switchMode(false),
+                        textColor: text,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: _modeButton(
+                        label: '验证码登录',
+                        selected: _isTotpLogin,
+                        onTap: () => _switchMode(true),
+                        textColor: text,
+                      ),
+                    ),
+                  ],
+                ),
+              if (!_isRegister) const SizedBox(height: 14),
               TextField(
                 controller: _username,
                 style: TextStyle(color: text),
@@ -89,31 +152,52 @@ class _AuthViewState extends State<AuthView> {
                 ),
               ),
               const SizedBox(height: 14),
-              TextField(
-                controller: _password,
-                obscureText: true,
-                style: TextStyle(color: text),
-                decoration: InputDecoration(
-                  labelText: '密码',
-                  filled: true,
-                  fillColor: bg,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-                onSubmitted: (_) => _submit(),
-              ),
-              if (_isRegister) ...[
-                const SizedBox(height: 14),
+              if (!_isTotpLogin) ...[
                 TextField(
-                  controller: _password2,
+                  controller: _password,
                   obscureText: true,
                   style: TextStyle(color: text),
                   decoration: InputDecoration(
-                    labelText: '确认密码',
+                    labelText: '密码',
                     filled: true,
                     fillColor: bg,
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                   onSubmitted: (_) => _submit(),
+                ),
+                if (_isRegister) ...[
+                  const SizedBox(height: 14),
+                  TextField(
+                    controller: _password2,
+                    obscureText: true,
+                    style: TextStyle(color: text),
+                    decoration: InputDecoration(
+                      labelText: '确认密码',
+                      filled: true,
+                      fillColor: bg,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                    onSubmitted: (_) => _submit(),
+                  ),
+                ],
+              ] else ...[
+                TextField(
+                  controller: _totpCode,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(color: text, letterSpacing: 4, fontSize: 18),
+                  decoration: InputDecoration(
+                    labelText: '认证器验证码',
+                    hintText: '6 位数字',
+                    filled: true,
+                    fillColor: bg,
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                  onSubmitted: (_) => _submit(),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '使用已绑定的认证器 App（Google Authenticator / Microsoft Authenticator 等）生成的 6 位验证码登录',
+                  style: TextStyle(fontSize: 11, color: muted, height: 1.4),
                 ),
               ],
               if (_error != null) ...[
@@ -132,18 +216,58 @@ class _AuthViewState extends State<AuthView> {
                   ),
                   child: _loading
                       ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                      : Text(_isRegister ? '注册' : '登录', style: const TextStyle(fontSize: 16)),
+                      : Text(
+                          _isRegister ? '注册' : (_isTotpLogin ? '验证码登录' : '登录'),
+                          style: const TextStyle(fontSize: 16),
+                        ),
                 ),
               ),
               const SizedBox(height: 10),
               TextButton(
-                onPressed: () => setState(() { _isRegister = !_isRegister; _error = null; }),
+                onPressed: () => setState(() {
+                  _isRegister = !_isRegister;
+                  _isTotpLogin = false;
+                  _error = null;
+                  _totpCode.clear();
+                }),
                 child: Text(
                   _isRegister ? '已有账号？去登录' : '没有账号？去注册',
                   style: const TextStyle(color: AppColors.vtAccent),
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _modeButton({
+    required String label,
+    required bool selected,
+    required VoidCallback onTap,
+    required Color textColor,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.vtAccent.withValues(alpha: 0.15) : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: selected ? AppColors.vtAccent : AppColors.vtBorder,
+            width: selected ? 1.5 : 1,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+              color: selected ? AppColors.vtAccent : textColor,
+            ),
           ),
         ),
       ),

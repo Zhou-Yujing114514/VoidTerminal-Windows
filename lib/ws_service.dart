@@ -31,6 +31,7 @@ class WsService {
   void Function(String)? onAnnouncementUpdate;
   void Function(FriendRequest)? onFriendRequest;
   void Function(List<User>)? onFriendUpdate;
+  void Function(bool ok, String action, String fromName)? onRequestRespond;
   void Function(bool, String?)? onRequestSent;
   void Function(ChatGroup)? onGroupCreated;
   void Function(String, String)? onGroupRemoved;
@@ -216,7 +217,11 @@ class WsService {
         onFriendUpdate?.call(list);
         break;
       case 'request-respond':
-        onRequestSent?.call(d['ok'] as bool? ?? false, d['error'] as String?);
+        onRequestRespond?.call(
+          d['ok'] as bool? ?? false,
+          d['action'] as String? ?? '',
+          d['fromName'] as String? ?? '',
+        );
         break;
       case 'request-sent':
         onRequestSent?.call(d['ok'] as bool? ?? false, d['error'] as String?);
@@ -300,7 +305,8 @@ class WsService {
 
   void _startHeartbeat() {
     _heartbeatTimer?.cancel();
-    _heartbeatTimer = Timer.periodic(const Duration(seconds: 25), (_) {
+    // 心跳间隔 15 秒，保持连接活跃，防止被中间设备断开
+    _heartbeatTimer = Timer.periodic(const Duration(seconds: 15), (_) {
       _channel?.sink.add('ping');
     });
   }
