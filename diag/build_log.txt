@@ -1,5 +1,5 @@
-[  +18 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
-[   +5 ms] Artifact Instance of 'GradleWrapper' is not required, skipping update.
+[  +11 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
+[   +2 ms] Artifact Instance of 'GradleWrapper' is not required, skipping update.
 [        ] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
@@ -21,20 +21,20 @@
 [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'FontSubsetArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'PubDependencies' is not required, skipping update.
-[  +13 ms] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[   +9 ms] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
 [        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
 [        ] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
-[   +2 ms] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
-[  +44 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
+[  +22 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
 [        ] Artifact Instance of 'GradleWrapper' is not required, skipping update.
 [        ] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
@@ -43,7 +43,7 @@
 [        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
 [        ] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
 [        ] Artifact Instance of 'FlutterSdk' is not required, skipping update.
-[   +1 ms] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
@@ -57,32 +57,32 @@
 [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'FontSubsetArtifacts' is not required, skipping update.
 [        ] Artifact Instance of 'PubDependencies' is not required, skipping update.
-[   +9 ms] Skipping pub get: version match.
-[  +72 ms] Found plugin shared_preferences at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.5\
-[   +5 ms] Found plugin shared_preferences_windows at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
-[   +5 ms] Found plugin path_provider_windows at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
-[   +9 ms] Found plugin shared_preferences_web at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
-[   +4 ms] Found plugin shared_preferences_linux at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
-[   +2 ms] Found plugin path_provider_linux at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.2\
-[   +3 ms] Found plugin shared_preferences_foundation at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
-[   +3 ms] Found plugin shared_preferences_android at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.27\
-[  +65 ms] Found plugin shared_preferences at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.5\
-[   +2 ms] Found plugin shared_preferences_windows at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[   +5 ms] Skipping pub get: version match.
+[  +42 ms] Found plugin shared_preferences at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.5\
+[   +4 ms] Found plugin shared_preferences_windows at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
 [   +3 ms] Found plugin path_provider_windows at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
-[   +7 ms] Found plugin shared_preferences_web at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
-[   +3 ms] Found plugin shared_preferences_linux at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +4 ms] Found plugin shared_preferences_web at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +2 ms] Found plugin shared_preferences_linux at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
 [   +1 ms] Found plugin path_provider_linux at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.2\
-[   +2 ms] Found plugin shared_preferences_foundation at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[   +1 ms] Found plugin shared_preferences_foundation at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
 [   +1 ms] Found plugin shared_preferences_android at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.27\
-[  +15 ms] Skipping generating generated_plugin_registrant.h because it is up-to-date.
-[   +4 ms] Skipping generating generated_plugin_registrant.cc because it is up-to-date.
-[   +1 ms] Skipping generating generated_plugins.cmake because it is up-to-date.
-[  +27 ms] executing: C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -format json -products * -utf8 -latest -version 16 -requires Microsoft.VisualStudio.Workload.NativeDesktop Microsoft.VisualStudio.Component.VC.Tools.x86.x64 Microsoft.VisualStudio.Component.VC.CMake.Project
-[  +50 ms] Exit code 0 from: C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -format json -products * -utf8 -latest -version 16 -requires Microsoft.VisualStudio.Workload.NativeDesktop Microsoft.VisualStudio.Component.VC.Tools.x86.x64 Microsoft.VisualStudio.Component.VC.CMake.Project
+[  +30 ms] Found plugin shared_preferences at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.5\
+[        ] Found plugin shared_preferences_windows at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[   +1 ms] Found plugin path_provider_windows at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[   +3 ms] Found plugin shared_preferences_web at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +1 ms] Found plugin shared_preferences_linux at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[        ] Found plugin path_provider_linux at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.2\
+[   +1 ms] Found plugin shared_preferences_foundation at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[        ] Found plugin shared_preferences_android at C:\Users\runneradmin\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.27\
+[   +8 ms] Skipping generating generated_plugin_registrant.h because it is up-to-date.
+[   +1 ms] Skipping generating generated_plugin_registrant.cc because it is up-to-date.
+[        ] Skipping generating generated_plugins.cmake because it is up-to-date.
+[  +17 ms] executing: C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -format json -products * -utf8 -latest -version 16 -requires Microsoft.VisualStudio.Workload.NativeDesktop Microsoft.VisualStudio.Component.VC.Tools.x86.x64 Microsoft.VisualStudio.Component.VC.CMake.Project
+[  +35 ms] Exit code 0 from: C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -format json -products * -utf8 -latest -version 16 -requires Microsoft.VisualStudio.Workload.NativeDesktop Microsoft.VisualStudio.Component.VC.Tools.x86.x64 Microsoft.VisualStudio.Component.VC.CMake.Project
 [        ] [
              {
-               "instanceId": "a09af0cf",
-               "installDate": "2026-08-18T19:18:34Z",
+               "instanceId": "ac8727f6",
+               "installDate": "2026-08-24T10:21:32Z",
                "installationName": "VisualStudio/18.9.1+12112.369",
                "installationPath": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise",
                "installationVersion": "18.9.12112.369",
@@ -105,7 +105,7 @@
                "releaseNotes": "https://docs.microsoft.com/en-us/visualstudio/releases/18/release-notes-v18.9#18.9.1",
                "resolvedInstallationPath": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise",
                "thirdPartyNotices": "https://go.microsoft.com/fwlink/?LinkId=661480",
-               "updateDate": "2026-08-18T19:18:34.9296915Z",
+               "updateDate": "2026-08-24T10:21:32.8198081Z",
                "catalog": {
                  "buildBranch": "stable",
                  "buildVersion": "18.9.12112.369",
@@ -137,10 +137,10 @@
                }
              }
            ]
-[   +8 ms] Building Windows application...
-[   +3 ms] executing: C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -S D:\a\VoidTerminal-Windows\VoidTerminal-Windows\windows -B D:\a\VoidTerminal-Windows\VoidTerminal-Windows\build\windows\x64 -G Visual Studio 18 2026 -A x64 -DFLUTTER_TARGET_PLATFORM=windows-x64
-[ +726 ms] CMake Warning (dev) in CMakeLists.txt:
-[   +1 ms]   No project() command is present.  The top-level CMakeLists.txt file must
+[   +4 ms] Building Windows application...
+[   +2 ms] executing: C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -S D:\a\VoidTerminal-Windows\VoidTerminal-Windows\windows -B D:\a\VoidTerminal-Windows\VoidTerminal-Windows\build\windows\x64 -G Visual Studio 18 2026 -A x64 -DFLUTTER_TARGET_PLATFORM=windows-x64
+[+1419 ms] CMake Warning (dev) in CMakeLists.txt:
+[        ]   No project() command is present.  The top-level CMakeLists.txt file must
 [        ]   contain a literal, direct call to the project() command.  Add a line of
 [        ]   code such as
 [        ]     project(ProjectName)
@@ -148,36 +148,36 @@
 [        ]   CMake is pretending there is a "project(Project)" command on the first
 [        ]   line.
 [        ] This warning is for project developers.  Use -Wno-dev to suppress it.
-[  +21 ms] CMake Warning (dev) in CMakeLists.txt:
+[  +33 ms] CMake Warning (dev) in CMakeLists.txt:
 [        ]   cmake_minimum_required() should be called prior to this top-level project()
 [        ]   call.  Please see the cmake-commands(7) manual for usage documentation of
 [        ]   both commands.
 [        ] This warning is for project developers.  Use -Wno-dev to suppress it.
-[+8245 ms] -- The C compiler identification is MSVC 19.51.36256.0
-[+1362 ms] -- The CXX compiler identification is MSVC 19.51.36256.0
-[ +159 ms] -- Detecting C compiler ABI info
-[+1073 ms] -- Detecting C compiler ABI info - done
-[  +27 ms] -- Check for working C compiler: C:/Program Files/Microsoft Visual Studio/18/Enterprise/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/cl.exe - skipped
-[   +4 ms] -- Detecting C compile features
-[   +4 ms] -- Detecting C compile features - done
-[  +85 ms] -- Detecting CXX compiler ABI info
-[ +713 ms] -- Detecting CXX compiler ABI info - done
-[  +22 ms] -- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/18/Enterprise/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/cl.exe - skipped
+[+26028 ms] -- The C compiler identification is MSVC 19.51.36256.0
+[+2287 ms] -- The CXX compiler identification is MSVC 19.51.36256.0
+[ +137 ms] -- Detecting C compiler ABI info
+[+1504 ms] -- Detecting C compiler ABI info - done
+[  +53 ms] -- Check for working C compiler: C:/Program Files/Microsoft Visual Studio/18/Enterprise/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/cl.exe - skipped
+[  +38 ms] -- Detecting C compile features
+[  +61 ms] -- Detecting C compile features - done
+[ +340 ms] -- Detecting CXX compiler ABI info
+[ +714 ms] -- Detecting CXX compiler ABI info - done
+[  +16 ms] -- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/18/Enterprise/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/cl.exe - skipped
 [        ] -- Detecting CXX compile features
-[   +1 ms] -- Detecting CXX compile features - done
-[   +6 ms] CMake Error at flutter/CMakeLists.txt:49 (include):
+[        ] -- Detecting CXX compile features - done
+[  +17 ms] CMake Error at flutter/CMakeLists.txt:49 (include):
 [        ]   include could not find requested file:
 [        ]     D:/a/VoidTerminal-Windows/VoidTerminal-Windows/windows/flutter/ephemeral/flutter_build_rules.cmake
-[   +4 ms] CMake Error at CMakeLists.txt:75 (install):
+[   +7 ms] CMake Error at CMakeLists.txt:75 (install):
 [        ]   install FILES given directory "" to install.
-[        ] -- Configuring incomplete, errors occurred!
 [        ] CMake Error at CMakeLists.txt:77 (install):
 [        ]   install FILES given directory "" to install.
+[        ] -- Configuring incomplete, errors occurred!
 [        ] CMake Error at CMakeLists.txt:97 (install):
 [        ]   install FILES given directory "" to install.
-[  +30 ms] Building Windows application... (completed in 12.5s)
-[        ] "flutter windows" took 12,874ms.
-[   +2 ms] Unable to generate build files
+[  +20 ms] Building Windows application... (completed in 32.7s)
+[        ] "flutter windows" took 32,898ms.
+[   +1 ms] Unable to generate build files
 [        ] 
            #0      throwToolExit (package:flutter_tools/src/base/common.dart:34:3)
            #1      _runCmakeGeneration (package:flutter_tools/src/windows/build_windows.dart:209:5)
