@@ -103,6 +103,25 @@ jobs:
             exit 1
           }
 
+      - name: Bundle VC++ runtime DLLs (portable, no install needed)
+        if: success()
+        run: |
+          $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
+          $redistBase = Join-Path $vsPath "VC\Redist\MSVC"
+          $crtDir = Get-ChildItem $redistBase -Directory | Sort-Object Name -Descending | Select-Object -First 1
+          $crtPath = Join-Path $crtDir.FullName "x64\Microsoft.VC143.CRT"
+          $dest = "build\windows\x64\runner\Release"
+          $dlls = @("VCRUNTIME140.dll","VCRUNTIME140_1.dll","MSVCP140.dll","MSVCP140_1.dll","concrt140.dll","vccorlib140.dll")
+          foreach ($dll in $dlls) {
+            $src = Join-Path $crtPath $dll
+            if (Test-Path $src) {
+              Copy-Item $src $dest -Force
+              Write-Host "Copied $dll"
+            }
+          }
+          Write-Host "--- Release dir contents ---"
+          Get-ChildItem $dest | Select-Object Name,Length
+
       - name: Upload artifacts (on success)
         if: success()
         uses: actions/upload-artifact@v4
