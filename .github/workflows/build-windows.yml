@@ -28,10 +28,13 @@ jobs:
         run: flutter config --enable-windows-desktop
 
       - name: Ensure Windows platform files
-        run: flutter create . --platforms=windows --org com.example
+        run: flutter create . --platforms=windows --org com.example --force
 
       - name: Remove default test file
         run: Remove-Item test/widget_test.dart -ErrorAction SilentlyContinue
+
+      - name: Re-run pub get to generate ephemeral
+        run: flutter pub get
 
       - name: Flutter doctor
         run: flutter doctor -v
