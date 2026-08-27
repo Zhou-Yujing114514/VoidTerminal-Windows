@@ -7,11 +7,16 @@ on:
     branches: [main, master]
   workflow_dispatch:
 
+permissions:
+  contents: write   # 允许把诊断日志写回仓库
+
 jobs:
   build-windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -28,17 +33,18 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Show Flutter / Dart / Windows SDK versions
+      - name: Show versions
         run: |
           flutter --version
           dart --version
           where msbuild
 
       - name: Build Windows release (capture full log)
+        id: build
         run: flutter build windows --release --verbose > build_log.txt 2>&1
         continue-on-error: true
 
-      - name: Upload build log (always, for diagnosis)
+      - name: Upload build log artifact (always)
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -46,14 +52,35 @@ jobs:
           path: build_log.txt
           retention-days: 7
 
+      - name: On failure, write log back to repo for diagnosis
+        if: steps.build.outcome == 'failure'
+        run: |
+          New-Item -ItemType Directory -Force -Path diag | Out-Null
+          Copy-Item build_log.txt diag\build_log.txt
+          # 写最后 200 行到单独文件便于查看
+          $lines = Get-Content build_log.txt
+          $tail = if ($lines.Count -gt 200) { $lines[($lines.Count-200)..($lines.Count-1)] } else { $lines }
+          Set-Content diag\build_log_tail.txt ($tail -join "`n")
+
+      - name: Commit diagnostic log (on failure)
+        if: steps.build.outcome == 'failure'
+        run: |
+          git config user.email "action@github.com"
+          git config user.name "github-actions[bot]"
+          git add diag/
+          git commit -m "diag: attach flutter build failure log [skip ci]" || exit 0
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+        continue-on-error: true
+
       - name: Check build result
         run: |
-          if (Test-Path build_log.txt) { Get-Content build_log.txt -Tail 120 }
-          if (Test-Path "build/windows/x64/runner/Release/void_terminal_windows.exe") {
+          if (Test-Path build_log.txt) { Get-Content build_log.txt -Tail 80 }
+          $exe = "build/windows/x64/runner/Release/void_terminal_windows.exe"
+          if (Test-Path $exe) {
             Write-Host "BUILD SUCCEEDED"
             exit 0
           } else {
-            Write-Host "BUILD FAILED (see build-log artifact)"
+            Write-Host "BUILD FAILED (see build-log artifact / diag/ folder)"
             exit 1
           }
 
