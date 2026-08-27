@@ -28,10 +28,37 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Build Windows release (MSI + EXE)
-        run: flutter build windows --release
+      - name: Show Flutter / Dart / Windows SDK versions
+        run: |
+          flutter --version
+          dart --version
+          where msbuild
 
-      - name: Upload artifacts
+      - name: Build Windows release (capture full log)
+        run: flutter build windows --release --verbose > build_log.txt 2>&1
+        continue-on-error: true
+
+      - name: Upload build log (always, for diagnosis)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build_log.txt
+          retention-days: 7
+
+      - name: Check build result
+        run: |
+          if (Test-Path build_log.txt) { Get-Content build_log.txt -Tail 120 }
+          if (Test-Path "build/windows/x64/runner/Release/void_terminal_windows.exe") {
+            Write-Host "BUILD SUCCEEDED"
+            exit 0
+          } else {
+            Write-Host "BUILD FAILED (see build-log artifact)"
+            exit 1
+          }
+
+      - name: Upload artifacts (on success)
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: VoidTerminal-Windows
