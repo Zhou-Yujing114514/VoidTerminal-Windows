@@ -107,16 +107,29 @@ jobs:
         if: success()
         run: |
           $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
-          $redistBase = Join-Path $vsPath "VC\Redist\MSVC"
-          $crtDir = Get-ChildItem $redistBase -Directory | Sort-Object Name -Descending | Select-Object -First 1
-          $crtPath = Join-Path $crtDir.FullName "x64\Microsoft.VC143.CRT"
           $dest = "build\windows\x64\runner\Release"
           $dlls = @("VCRUNTIME140.dll","VCRUNTIME140_1.dll","MSVCP140.dll","MSVCP140_1.dll","concrt140.dll","vccorlib140.dll")
+          # 递归搜索 VC\Redist 下的所有 x64 CRT 目录
+          $crtPaths = Get-ChildItem (Join-Path $vsPath "VC\Redist") -Recurse -Directory -Filter "Microsoft.VC*.CRT" | Where-Object { $_.FullName -match "\\x64\\" }
+          Write-Host "Found CRT dirs: $($crtPaths.Count)"
+          foreach ($crtPath in $crtPaths) {
+            foreach ($dll in $dlls) {
+              $src = Join-Path $crtPath.FullName $dll
+              if (Test-Path $src) {
+                Copy-Item $src $dest -Force
+                Write-Host "Copied $dll from $($crtPath.Name)"
+              }
+            }
+          }
+          # 兜底：从 System32 复制（如果 Redist 中没有）
           foreach ($dll in $dlls) {
-            $src = Join-Path $crtPath $dll
-            if (Test-Path $src) {
-              Copy-Item $src $dest -Force
-              Write-Host "Copied $dll"
+            $destFile = Join-Path $dest $dll
+            if (-not (Test-Path $destFile)) {
+              $sys32 = Join-Path $env:SystemRoot "System32\$dll"
+              if (Test-Path $sys32) {
+                Copy-Item $sys32 $dest -Force
+                Write-Host "Copied $dll from System32 (fallback)"
+              }
             }
           }
           Write-Host "--- Release dir contents ---"
