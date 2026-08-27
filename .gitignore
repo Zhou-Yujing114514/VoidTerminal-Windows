@@ -1,0 +1,24 @@
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+*.g.dart
+pubspec.lock
+
+# Windows build artifacts
+windows/flutter/ephemeral/
+windows/flutter/generated_plugins.cmake.bak
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
