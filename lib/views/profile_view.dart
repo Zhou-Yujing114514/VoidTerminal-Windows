@@ -124,7 +124,7 @@ class ProfileView extends StatelessWidget {
                   try {
                     final u = await app.api.changeUsername(t, name);
                     app.currentUser = u;
-                    app.notifyListeners();
+                    app.refresh();
                   } catch (e) {
                     app.showToast('修改失败: $e');
                   }

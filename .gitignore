@@ -22,3 +22,6 @@ windows/flutter/generated_plugins.cmake.bak
 .DS_Store
 Thumbs.db
 *.log
+
+# 构建诊断日志（仅失败时由 CI 回写，不入库）
+diag/
