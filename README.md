@@ -1,6 +1,6 @@
 # 虚空终端 Windows 桌面版（VoidTerminal-Windows）
 
-虚空终端（聊天网站 buer.kdns.fr）的 Windows 原生桌面客户端，基于 Flutter 构建，原生渲染（非 WebView 套壳），连接 buer.kdns.fr。
+虚空终端（聊天网站 buer.sswwgzs.cn）的 Windows 原生桌面客户端，基于 Flutter 构建，原生渲染（非 WebView 套壳），连接 buer.sswwgzs.cn。
 
 与 [Linux 版](https://github.com/Zhou-Yujing114514/VoidTerminal-Linux) 共享同一套 Dart 业务逻辑（`lib/`），仅平台宿主层不同（Linux 用 GTK，Windows 用 Win32），界面与功能 1:1 对齐。
 
@@ -95,8 +95,8 @@ VoidTerminal-Windows/
 
 ## 相关项目
 
-- 网页版：https://buer.kdns.fr
+- 网页版：https://buer.sswwgzs.cn
 - Linux 客户端：https://github.com/Zhou-Yujing114514/VoidTerminal-Linux
 - Android 客户端：https://github.com/Zhou-Yujing114514/VoidTerminal-Android
 - iOS 客户端：https://github.com/Zhou-Yujing114514/VoidTerminal-iOS
-- 小说下载站：https://morax.kdns.fr
+- 小说下载站：https://morax.sswwgzs.cn
